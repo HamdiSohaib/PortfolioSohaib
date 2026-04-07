@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohaib HAMDI — Portfolio BTS SIO SLAM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-hover: #1c2333;
+            --bg-terminal: #0d1117;
+            --border: #21262d;
+            --border-hover: #30363d;
+            --green: #00f0a0;
+            --green-dim: rgba(0,240,160,.15);
+            --green-glow: rgba(0,240,160,.25);
+            --green-dark: #00c080;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-dim: #484f58;
+            --accent-red: #f85149;
+            --accent-yellow: #e3b341;
+            --accent-blue: #58a6ff;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+            --shadow: 0 2px 8px rgba(0,0,0,.3);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,.4);
+            --transition: .3s cubic-bezier(.4,0,.2,1);
+        }
+
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;scroll-padding-top:80px}
+        body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+        ::selection{background:var(--green);color:var(--bg)}
+        a{color:inherit;text-decoration:none}
+
+        /* ═══ NAV ═══ */
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,17,23,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:var(--transition)}
+        nav.scrolled{box-shadow:0 4px 20px rgba(0,0,0,.4)}
+        .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px}
+        .nav-brand{font-family:var(--font-mono);font-weight:700;font-size:1.15rem;color:var(--green);display:flex;align-items:center;gap:.5rem}
+        .nav-brand .prompt{color:var(--accent-red)}
+        .nav-links{display:flex;list-style:none;gap:.2rem}
+        .nav-links a{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted);padding:.45rem .8rem;border-radius:6px;transition:var(--transition);letter-spacing:-.01em}
+        .nav-links a:hover,.nav-links a.active{color:var(--green);background:var(--green-dim)}
+        .nav-links a::before{content:'// ';color:var(--text-dim);font-size:.7rem}
+        .mobile-toggle{display:none;background:none;border:none;cursor:pointer;width:36px;height:36px;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+        .mobile-toggle span{width:20px;height:2px;background:var(--green);border-radius:2px;transition:var(--transition)}
+        .mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .mobile-toggle.open span:nth-child(2){opacity:0}
+        .mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+        /* ═══ HERO ═══ */
+        .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;max-width:1200px;margin:0 auto;padding:6rem 2rem 4rem}
+
+        .hero-left{z-index:2}
+        .hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1.2rem;border:1px solid var(--border);border-radius:50px;font-family:var(--font-mono);font-size:.82rem;color:var(--green);margin-bottom:2rem;background:var(--green-dim)}
+        .hero-tag .prompt{color:var(--accent-yellow);font-weight:700}
+        .hero-name{font-size:clamp(3rem,6vw,5rem);font-weight:900;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem}
+        .hero-name .first{color:var(--text);display:block}
+        .hero-name .last{color:var(--green);display:block}
+        .hero-desc{font-size:1.05rem;color:var(--text-muted);line-height:1.8;margin-bottom:2rem;max-width:500px}
+        .hero-buttons{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.6rem;font-family:var(--font-mono);font-size:.88rem;font-weight:600;border-radius:var(--radius-sm);transition:var(--transition);cursor:pointer;border:none}
+        .btn svg{width:16px;height:16px}
+        .btn-primary{background:var(--green);color:var(--bg)}
+        .btn-primary:hover{box-shadow:0 0 25px var(--green-glow);transform:translateY(-2px)}
+        .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+        .btn-outline:hover{border-color:var(--green);color:var(--green)}
+        .hero-badges{display:flex;flex-wrap:wrap;gap:.6rem}
+        .badge{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .9rem;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);transition:var(--transition)}
+        .badge:hover{border-color:var(--green);color:var(--green)}
+        .badge-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+        .badge-dot.green{background:var(--green)}
+        .badge-dot.yellow{background:var(--accent-yellow)}
+        .badge-dot.blue{background:var(--accent-blue)}
+
+        /* Terminal card */
+        .hero-right{z-index:2}
+        .terminal{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg)}
+        .terminal-bar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid var(--border);background:rgba(22,27,34,.8)}
+        .terminal-dots{display:flex;gap:6px}
+        .terminal-dots span{width:12px;height:12px;border-radius:50%}
+        .terminal-dots span:nth-child(1){background:var(--accent-red)}
+        .terminal-dots span:nth-child(2){background:var(--accent-yellow)}
+        .terminal-dots span:nth-child(3){background:var(--green)}
+        .terminal-title{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim)}
+        .terminal-body{padding:1.5rem;font-family:var(--font-mono);font-size:.85rem;line-height:2}
+        .terminal-body .cmd{color:var(--accent-yellow)}
+        .terminal-body .file{color:var(--accent-blue)}
+        .terminal-body .key{color:var(--green)}
+        .terminal-body .val{color:var(--text-muted)}
+        .terminal-body .str{color:var(--accent-blue)}
+        .terminal-body .num{color:var(--accent-red)}
+        .terminal-body .brace{color:var(--text-dim)}
+        .terminal-body .cursor{display:inline-block;width:8px;height:16px;background:var(--green);animation:blink 1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
+        @keyframes blink{50%{opacity:0}}
+        .terminal-stats{display:flex;gap:2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--border);background:rgba(22,27,34,.5)}
+        .t-stat{text-align:center}
+        .t-stat-num{font-family:var(--font-mono);font-size:1.8rem;font-weight:700;color:var(--green);line-height:1}
+        .t-stat-label{font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-top:.2rem}
+
+        /* ═══ SECTIONS ═══ */
+        .section{padding:6rem 2rem}
+        .section-alt{background:var(--bg-card)}
+        .container{max-width:1100px;margin:0 auto}
+        .section-label{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.8rem;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem}
+        .section-label svg{width:16px;height:16px}
+        .section-title{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:1rem}
+        .section-desc{font-size:1rem;color:var(--text-muted);max-width:600px;margin-bottom:3rem;line-height:1.8}
+
+        /* ═══ ABOUT ═══ */
+        .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+        .about-text p{font-size:1rem;color:var(--text-muted);margin-bottom:1.2rem;line-height:1.8}
+        .about-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;transition:var(--transition)}
+        .section-alt .about-card{background:var(--bg-card)}
+        .about-card:hover{border-color:var(--green);box-shadow:0 0 20px rgba(0,240,160,.05)}
+        .about-card h3{font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.8rem}
+        .about-card p{font-size:.92rem;color:var(--text-muted);line-height:1.7}
+
+        /* ═══ SKILLS ═══ */
+        .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem}
+        .skill-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;transition:var(--transition);position:relative;overflow:hidden}
+        .skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:var(--transition)}
+        .skill-card:hover::before{transform:scaleX(1)}
+        .skill-card:hover{border-color:var(--green);box-shadow:0 0 20px rgba(0,240,160,.08);transform:translateY(-3px)}
+        .skill-emoji{font-size:1.8rem;margin-bottom:.8rem;display:block}
+        .skill-card h3{font-family:var(--font-mono);font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.8rem}
+        .skill-list{list-style:none}
+        .skill-list li{font-size:.88rem;color:var(--text-muted);padding:.3rem 0;display:flex;align-items:center;gap:.5rem}
+        .skill-list li::before{content:'▸';color:var(--green);font-size:.7rem}
+
+        /* ═══ PROJECTS ═══ */
+        .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+        .project-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:var(--transition);position:relative;overflow:hidden}
+        .project-card:hover{border-color:var(--green);box-shadow:0 0 20px rgba(0,240,160,.08);transform:translateY(-3px)}
+        .project-num{font-family:var(--font-mono);font-size:3rem;font-weight:700;color:var(--border);line-height:1;margin-bottom:.8rem;transition:var(--transition)}
+        .project-card:hover .project-num{color:var(--green-dim)}
+        .project-card h3{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
+        .project-period{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);margin-bottom:.7rem}
+        .project-card p{font-size:.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem}
+        .tags{display:flex;flex-wrap:wrap;gap:.4rem}
+        .tag{font-family:var(--font-mono);font-size:.72rem;color:var(--green);background:var(--green-dim);padding:.25rem .65rem;border-radius:50px;border:1px solid rgba(0,240,160,.2)}
+
+        /* ═══ COMPETENCES TABLE ═══ */
+        .comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+        .comp-item{display:flex;align-items:flex-start;gap:.6rem;padding:.8rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;color:var(--text-muted);line-height:1.5;transition:var(--transition)}
+        .comp-item:hover{border-color:var(--green)}
+        .comp-item .check{color:var(--green);font-size:.9rem;flex-shrink:0;margin-top:2px}
+
+        /* ═══ ENTERPRISE ═══ */
+        .enterprise-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;transition:var(--transition)}
+        .enterprise-card:hover{border-color:var(--green)}
+        .enterprise-card h3{font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+        .enterprise-card .subtitle{color:var(--green);font-family:var(--font-mono);font-size:.85rem;margin-bottom:1rem}
+        .enterprise-card p{font-size:.95rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem}
+        .mission-list{list-style:none}
+        .mission-list li{font-size:.9rem;color:var(--text-muted);padding:.3rem 0;display:flex;align-items:flex-start;gap:.5rem}
+        .mission-list li::before{content:'→';color:var(--green);font-weight:600;flex-shrink:0}
+
+        /* ═══ VEILLE ═══ */
+        .veille-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;transition:var(--transition)}
+        .veille-card:hover{border-color:var(--green)}
+        .veille-card h3{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.8rem}
+        .veille-card p{font-size:.95rem;color:var(--text-muted);line-height:1.8}
+
+        /* ═══ TIMELINE ═══ */
+        .timeline{position:relative;padding-left:2.5rem}
+        .timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--green),var(--border),transparent)}
+        .timeline-item{position:relative;margin-bottom:2.5rem}
+        .timeline-dot{position:absolute;left:-2.5rem;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--green);z-index:1;transition:var(--transition)}
+        .timeline-item:hover .timeline-dot{background:var(--green);box-shadow:0 0 10px var(--green-glow)}
+        .timeline-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.4rem;flex-wrap:wrap}
+        .timeline-item h3{font-size:1rem;font-weight:700;color:var(--text)}
+        .timeline-item .subtitle{font-size:.85rem;color:var(--green);font-family:var(--font-mono)}
+        .timeline-date{font-family:var(--font-mono);font-size:.78rem;color:var(--green);background:var(--green-dim);padding:.2rem .7rem;border-radius:50px;white-space:nowrap}
+        .timeline-item p{font-size:.9rem;color:var(--text-muted);margin:.4rem 0;line-height:1.7}
+        .timeline-list{list-style:none;margin-top:.4rem}
+        .timeline-list li{font-size:.85rem;color:var(--text-muted);padding:.2rem 0;display:flex;align-items:flex-start;gap:.5rem}
+        .timeline-list li::before{content:'▸';color:var(--green);flex-shrink:0}
+
+        /* ═══ FORMATION ═══ */
+        .formation-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:2.5rem}
+        .formation-box h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+        .formation-box h3 svg{width:20px;height:20px;stroke:var(--green)}
+        .formation-list{list-style:none;display:grid;gap:.6rem}
+        .formation-list li{font-size:.9rem;color:var(--text-muted);padding:.6rem .8rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);transition:var(--transition)}
+        .formation-list li:hover{border-color:var(--green);transform:translateX(4px)}
+        .formation-list strong{color:var(--green);font-family:var(--font-mono);font-weight:600;font-size:.82rem}
+
+        /* ═══ SYNTHÈSE TABLE ═══ */
+        .synth-header{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem 2rem;margin-bottom:1.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem}
+        .synth-header-row{display:flex;align-items:center;gap:.8rem;font-size:.88rem}
+        .synth-key{font-family:var(--font-mono);font-size:.78rem;color:var(--green);font-weight:600;min-width:140px;flex-shrink:0}
+        .synth-val{color:var(--text-muted)}
+        .synth-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.5rem;margin-bottom:2rem}
+        .legend-item{font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:.5rem}
+        .legend-code{font-family:var(--font-mono);font-size:.72rem;font-weight:700;color:var(--bg);background:var(--green);padding:.15rem .45rem;border-radius:4px;flex-shrink:0}
+        .synth-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card);margin-bottom:0}
+        .synth-table{width:100%;border-collapse:collapse;font-size:.85rem}
+        .synth-table thead{background:rgba(0,240,160,.08)}
+        .synth-table th{font-family:var(--font-mono);font-size:.75rem;font-weight:600;color:var(--green);padding:.8rem .6rem;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+        .synth-table th.col-name{text-align:left;padding-left:1.2rem;min-width:280px}
+        .synth-table th.col-period{min-width:160px}
+        .synth-table th.col-comp{width:50px}
+        .synth-table td{padding:.65rem .6rem;border-bottom:1px solid var(--border);color:var(--text-muted);text-align:center;vertical-align:middle}
+        .synth-table td:first-child{text-align:left;padding-left:1.2rem;color:var(--text);font-weight:500}
+        .synth-table td:nth-child(2){font-family:var(--font-mono);font-size:.78rem;color:var(--text-dim);white-space:nowrap}
+        .synth-table tbody tr:hover{background:rgba(0,240,160,.04)}
+        .synth-section-row td{background:rgba(0,240,160,.06);color:var(--green)!important;font-family:var(--font-mono);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.7rem 1.2rem!important;text-align:left!important}
+        .check-on{color:var(--green);font-weight:700;font-size:.95rem}
+        .check-off{display:inline-block;width:14px;height:14px;border:1px solid var(--border);border-radius:3px}
+
+        /* ═══ SYNTHÈSE ═══ */
+        .synthese-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;transition:var(--transition)}
+        .synthese-box:hover{border-color:var(--green);box-shadow:0 0 20px rgba(0,240,160,.06)}
+        .synthese-icon-area{display:flex;align-items:center;gap:1.2rem}
+        .synthese-file-icon{width:52px;height:52px;background:var(--green-dim);border:1px solid rgba(0,240,160,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .synthese-file-icon svg{width:26px;height:26px;stroke:var(--green)}
+        .synthese-file-name{font-family:var(--font-mono);font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:.15rem}
+        .synthese-file-meta{font-size:.8rem;color:var(--text-dim)}
+        .synthese-actions{display:flex;gap:.7rem;flex-shrink:0}
+        .synthese-note{display:flex;align-items:flex-start;gap:.7rem;margin-top:1.2rem;padding:1rem 1.2rem;background:var(--green-dim);border-left:2px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+        .synthese-note svg{width:18px;height:18px;stroke:var(--green);flex-shrink:0;margin-top:2px}
+        .synthese-note p{font-size:.85rem;color:var(--text-muted);line-height:1.6}
+
+        /* ═══ CONTACT ═══ */
+        .contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+        .contact-card{display:flex;align-items:center;gap:1rem;padding:1.3rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);transition:var(--transition)}
+        .contact-card:hover{border-color:var(--green);transform:translateY(-2px)}
+        .contact-icon-wrap{width:44px;height:44px;background:var(--green-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition)}
+        .contact-card:hover .contact-icon-wrap{background:var(--green)}
+        .contact-icon-wrap svg{width:20px;height:20px;stroke:var(--green);transition:var(--transition)}
+        .contact-card:hover .contact-icon-wrap svg{stroke:var(--bg)}
+        .contact-label{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em}
+        .contact-val{font-size:.9rem;color:var(--text);font-weight:600}
+
+        /* ═══ FOOTER ═══ */
+        footer{border-top:1px solid var(--border);text-align:center;padding:2.5rem 2rem}
+        footer p{font-size:.82rem;color:var(--text-dim)}
+        footer .brand{color:var(--green);font-family:var(--font-mono);font-weight:700;font-size:.95rem;margin-bottom:.3rem}
+
+        /* ═══ SCROLL TOP ═══ */
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;background:var(--green);color:var(--bg);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px var(--green-glow);opacity:0;transform:translateY(20px);transition:var(--transition);z-index:99}
+        .scroll-top.visible{opacity:1;transform:translateY(0)}
+        .scroll-top:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--green-glow)}
+        .scroll-top svg{width:18px;height:18px}
+
+        /* ═══ REVEAL ═══ */
+        .reveal{opacity:0;transform:translateY(25px);transition:opacity .6s ease-out,transform .6s ease-out}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+
+        /* ═══ RESPONSIVE ═══ */
+        @media(max-width:900px){
+            .hero{grid-template-columns:1fr;padding-top:5rem}
+            .hero-right{order:-1}
+        }
+        @media(max-width:768px){
+            .mobile-toggle{display:flex}
+            .nav-links{position:fixed;top:68px;left:0;right:0;background:rgba(13,17,23,.97);backdrop-filter:blur(20px);flex-direction:column;padding:1.5rem;gap:.2rem;transform:translateY(-120%);transition:var(--transition);box-shadow:var(--shadow-lg);border-bottom:1px solid var(--border)}
+            .nav-links.open{transform:translateY(0)}
+            .about-grid,.projects-grid,.contact-grid,.comp-grid{grid-template-columns:1fr}
+            .section{padding:4rem 1.5rem}
+            .hero{padding:5rem 1.5rem 3rem}
+            .hero-name{font-size:3rem}
+            .terminal-stats{flex-wrap:wrap;gap:1rem}
+            .synthese-box{flex-direction:column;align-items:flex-start;padding:1.5rem}
+            .synthese-actions{width:100%;flex-direction:column}
+            .synthese-actions .btn{width:100%;justify-content:center}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand"><span class="prompt">&gt;</span> SH</div>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">Accueil</a></li>
+                <li><a href="#parcours">Parcours</a></li>
+                <li><a href="#enterprise">Entreprise</a></li>
+                <li><a href="#projects">Projets</a></li>
+                <li><a href="#skills">Compétences</a></li>
+                <li><a href="#veille">Veille</a></li>
+                <li><a href="#synthese">Synthèse</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="accueil">
+        <div class="hero-left">
+            <div class="hero-tag"><span class="prompt">$</span> BTS SIO option SLAM — 2ème année</div>
+            <h1 class="hero-name">
+                <span class="first">Sohaib</span>
+                <span class="last">HAMDI</span>
+            </h1>
+            <p class="hero-desc">Étudiant développeur passionné, spécialisé en Solutions Logicielles et Applications Métiers. Certifié Web3, premier BTS SIO de France à obtenir cette certification.</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Voir mes projets
+                </a>
+                <a href="./CV_HAMDI_SOHAIB.pdf" target="_blank" class="btn btn-outline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    Mon CV
+                </a>
+            </div>
+            <div class="hero-badges">
+                <div class="badge"><span class="badge-dot blue"></span> Lycée Robert Schuman — Dugny</div>
+                <div class="badge"><span class="badge-dot green"></span> Certification Web3 — PSTB Paris</div>
+                <div class="badge"><span class="badge-dot yellow"></span> Stage — Mantes Carrelage</div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <div class="terminal-dots"><span></span><span></span><span></span></div>
+                    <div class="terminal-title">sohaib@portfolio:~</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="cmd">$ cat</span> <span class="file">profil.json</span><br>
+                    <span class="brace">{</span><br>
+                    &nbsp;&nbsp;<span class="key">"nom"</span>: <span class="str">"Sohaib HAMDI"</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"formation"</span>: <span class="str">"BTS SIO SLAM"</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"certif"</span>: <span class="str">"Web3 — PSTB"</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"stage"</span>: <span class="str">"Mantes Carrelage"</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"projets"</span>: <span class="num">13</span>,<br>
+                    &nbsp;&nbsp;<span class="key">"veille"</span>: <span class="str">"IA &amp; Sport"</span><br>
+                    <span class="brace">}</span><br>
+                    <span class="cmd">$</span> <span class="cursor"></span>
+                </div>
+                <div class="terminal-stats">
+                    <div class="t-stat"><div class="t-stat-num">13</div><div class="t-stat-label">Projets</div></div>
+                    <div class="t-stat"><div class="t-stat-num">15+</div><div class="t-stat-label">Technos</div></div>
+                    <div class="t-stat"><div class="t-stat-num">2</div><div class="t-stat-label">Ans BTS</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-label reveal">// À propos</div>
+            <h2 class="section-title reveal">Qui suis-je ?</h2>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <p>Étudiant développeur passionné, spécialisé en Solutions Logicielles et Applications Métiers au Lycée Robert Schuman de Dugny. Certifié Web3 via PSTB Paris — premier BTS SIO de France à obtenir cette certification.</p>
+                    <p>Motivé et curieux, je m'investis dans chaque projet avec rigueur et créativité. Mon objectif est de devenir développeur full stack et de contribuer à des projets innovants dans le domaine du numérique.</p>
+                </div>
+                <div style="display:grid;gap:1rem">
+                    <div class="about-card reveal"><h3>Centres d'intérêt</h3><p>Football, Jeux vidéo, Informatique, Programmation, Intelligence Artificielle, Sport</p></div>
+                    <div class="about-card reveal"><h3>Langues</h3><p>Français (Natif) · Anglais (Scolaire) · Arabe (Courant)</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARCOURS -->
+    <section id="parcours" class="section section-alt">
+        <div class="container">
+            <div class="section-label reveal">// Parcours</div>
+            <h2 class="section-title reveal">Expériences & Formation</h2>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-header">
+                        <div><h3>Stage BTS SIO SLAM — Mantes Carrelage</h3><div class="subtitle">Développement web & support informatique</div></div>
+                        <span class="timeline-date">Mai — Juin 2025</span>
+                    </div>
+                    <p>Stage en entreprise avec des missions variées autour du développement et de l'infrastructure informatique.</p>
+                    <ul class="timeline-list">
+                        <li>Fluidification des postes informatiques (maintenance / optimisation)</li>
+                        <li>Découverte et application de WordPress</li>
+                        <li>Recherche d'hébergeur (Hostinger) et nom de domaine pour l'entreprise</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="formation-box reveal">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg> Formation</h3>
+                <ul class="formation-list">
+                    <li><strong>2023 — Auj.</strong> BTS SIO SLAM — Lycée Robert Schuman, Dugny</li>
+                    <li><strong>2024</strong> Certification Web3 — PSTB Paris</li>
+                    <li><strong>2023</strong> Certification PIX (Complète)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENTREPRISE -->
+    <section id="enterprise" class="section">
+        <div class="container">
+            <div class="section-label reveal">// Entreprise</div>
+            <h2 class="section-title reveal">Entreprise d'accueil</h2>
+            <div class="enterprise-card reveal">
+                <h3>Mantes Carrelage</h3>
+                <div class="subtitle">Stage BTS SIO SLAM — 2025</div>
+                <p>Entreprise spécialisée dans la distribution de carrelage, basée dans la région de Mantes-la-Jolie. Stage réalisé dans le cadre du BTS SIO option SLAM avec des missions orientées développement web et gestion informatique.</p>
+                <ul class="mission-list">
+                    <li>Fluidification des postes informatiques car trop lents</li>
+                    <li>Découverte et application de WordPress pour le site de l'entreprise</li>
+                    <li>Trouver l'hébergeur (Hostinger) et le nom de domaine adéquate à l'entreprise</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJETS -->
+    <section id="projects" class="section section-alt">
+        <div class="container">
+            <div class="section-label reveal">// Projets</div>
+            <h2 class="section-title reveal">Réalisations professionnelles</h2>
+            <p class="section-desc reveal">13 projets réalisés en formation et en milieu professionnel, couvrant le développement web, logiciel et la gestion de systèmes.</p>
+
+            <div class="projects-grid">
+                <div class="project-card reveal">
+                    <div class="project-num">01</div>
+                    <h3>WebCinemaPHP</h3>
+                    <div class="project-period">10/01/25 → 12/03/25</div>
+                    <p>Application web de gestion de cinéma développée en PHP.</p>
+                    <div class="tags"><span class="tag">PHP</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">MySQL</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">02</div>
+                    <h3>StartJavaFX</h3>
+                    <div class="project-period">06/03/25 → 09/05/25</div>
+                    <p>Application Java avec interface JavaFX pour la gestion de données.</p>
+                    <div class="tags"><span class="tag">Java</span><span class="tag">JavaFX</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">03</div>
+                    <h3>Zoo Java</h3>
+                    <div class="project-period">19/02/25 → 26/02/25</div>
+                    <p>Application de gestion d'un zoo en programmation orientée objet Java.</p>
+                    <div class="tags"><span class="tag">Java</span><span class="tag">POO</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">04</div>
+                    <h3>Mastermind Java</h3>
+                    <div class="project-period">27/12/24 → 28/12/24</div>
+                    <p>Jeu Mastermind développé en Java avec logique algorithmique.</p>
+                    <div class="tags"><span class="tag">Java</span><span class="tag">Algorithme</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">05</div>
+                    <h3>Aéroport PHP</h3>
+                    <div class="project-period">26/03/25 → 09/05/25</div>
+                    <p>Application web de gestion d'aéroport en PHP avec base de données.</p>
+                    <div class="tags"><span class="tag">PHP</span><span class="tag">MySQL</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">06</div>
+                    <h3>Nuit de l'Info 2024</h3>
+                    <div class="project-period">05/12/24 → 06/12/24</div>
+                    <p>Projet réalisé lors de la Nuit de l'Info 2024 en équipe, en une nuit.</p>
+                    <div class="tags"><span class="tag">PHP</span><span class="tag">HTML</span><span class="tag">JavaScript</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">07</div>
+                    <h3>Tic Tac Toe Java</h3>
+                    <div class="project-period">12/12/24</div>
+                    <p>Jeu du morpion développé en Java.</p>
+                    <div class="tags"><span class="tag">Java</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">08</div>
+                    <h3>GestionHotel Java</h3>
+                    <div class="project-period">23/01/25 → 30/01/25</div>
+                    <p>Application de gestion hôtelière en Java avec interface graphique.</p>
+                    <div class="tags"><span class="tag">Java</span><span class="tag">JavaFX</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">09</div>
+                    <h3>LPRS École — PHP</h3>
+                    <div class="project-period">09/25 → 12/25</div>
+                    <p>Application web de gestion scolaire pour le lycée Robert Schuman.</p>
+                    <div class="tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">HTML/CSS</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">10</div>
+                    <h3>LPRS École — JavaFX</h3>
+                    <div class="project-period">01/25 → 04/25</div>
+                    <p>Application de gestion scolaire en JavaFX avec modules Admin, Secrétaire, Infirmerie, Gestionnaire.</p>
+                    <div class="tags"><span class="tag">Java</span><span class="tag">JavaFX</span><span class="tag">MySQL</span></div>
+                </div>
+            </div>
+
+            <h3 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-top:3rem;margin-bottom:1rem" class="reveal">Missions en stage — Mantes Carrelage</h3>
+            <div class="projects-grid">
+                <div class="project-card reveal">
+                    <div class="project-num">11</div>
+                    <h3>Fluidification postes informatiques</h3>
+                    <div class="project-period">05/25 → 06/25</div>
+                    <p>Maintenance et optimisation des postes informatiques de l'entreprise.</p>
+                    <div class="tags"><span class="tag">Maintenance</span><span class="tag">Support</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">12</div>
+                    <h3>WordPress — Site entreprise</h3>
+                    <div class="project-period">05/25 → 06/25</div>
+                    <p>Découverte et application de WordPress pour créer le site de l'entreprise.</p>
+                    <div class="tags"><span class="tag">WordPress</span><span class="tag">Web</span></div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-num">13</div>
+                    <h3>Hébergement & Domaine</h3>
+                    <div class="project-period">05/25 → 06/25</div>
+                    <p>Recherche de l'hébergeur (Hostinger) et du nom de domaine pour Mantes Carrelage.</p>
+                    <div class="tags"><span class="tag">Hostinger</span><span class="tag">DNS</span><span class="tag">Hébergement</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPÉTENCES -->
+    <section id="skills" class="section">
+        <div class="container">
+            <div class="section-label reveal">// Compétences</div>
+            <h2 class="section-title reveal">Stack technique</h2>
+            <div class="skills-grid">
+                <div class="skill-card reveal"><span class="skill-emoji">💻</span><h3>Langages</h3><ul class="skill-list"><li>HTML / CSS</li><li>JavaScript</li><li>PHP</li><li>Python</li><li>Java (POO)</li><li>SQL</li></ul></div>
+                <div class="skill-card reveal"><span class="skill-emoji">⚡</span><h3>Frameworks</h3><ul class="skill-list"><li>React</li><li>Bootstrap</li><li>JavaFX</li><li>WordPress</li></ul></div>
+                <div class="skill-card reveal"><span class="skill-emoji">🛠️</span><h3>Outils</h3><ul class="skill-list"><li>Git / GitHub</li><li>Suite JetBrains</li><li>VS Code</li><li>phpMyAdmin</li></ul></div>
+                <div class="skill-card reveal"><span class="skill-emoji">🗄️</span><h3>Base de données</h3><ul class="skill-list"><li>MySQL</li></ul></div>
+                <div class="skill-card reveal"><span class="skill-emoji">📋</span><h3>Méthodes</h3><ul class="skill-list"><li>Développement agile</li><li>Modélisation UML</li><li>Gestion de projet</li></ul></div>
+                <div class="skill-card reveal"><span class="skill-emoji">🔗</span><h3>Web3 & Blockchain</h3><ul class="skill-list"><li>Certification PSTB</li><li>Smart Contracts</li><li>Technologies décentralisées</li></ul></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VEILLE -->
+    <section id="veille" class="section section-alt">
+        <div class="container">
+            <div class="section-label reveal">// Veille</div>
+            <h2 class="section-title reveal">Veille technologique</h2>
+            <p class="section-desc reveal">IA &amp; Sport — Comment l'intelligence artificielle transforme le monde du sport.</p>
+            <div class="veille-card reveal">
+                <h3>IA &amp; Sport</h3>
+                <p>Ma veille technologique porte sur l'impact de l'intelligence artificielle dans le domaine du sport : analyse de performance, prédiction de blessures, arbitrage assisté, entraînement personnalisé grâce au machine learning, et les enjeux éthiques associés. Cette veille est réalisée à l'aide de flux RSS (Feedly), d'alertes Google et de plateformes spécialisées.</p>
+            </div>
+
+            <h3 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-top:2.5rem;margin-bottom:1.2rem" class="reveal">Articles consultés</h3>
+            <div style="display:grid;gap:1rem">
+                <a href="https://instituteuropia.eu/fr/nos-articles/comment-lintelligence-artificielle-revolutionne-le-sport-en-2025-tendances-innovations-et-enjeux" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">01 — Comment l'IA révolutionne le sport en 2025</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">L'IA transforme l'entraînement sportif, la prévention des blessures, l'expérience des spectateurs et la stratégie des clubs.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">EuropIA — Juin 2025</span>
+                </a>
+                <a href="https://www.nec-computers.fr/intelligence-artificielle-revolutionne-l-analyse-sportive/" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">02 — L'IA révolutionne l'analyse sportive en 2026</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Hawk-Eye remplace les juges de ligne à Wimbledon. Réduction de 30% des blessures grâce à l'IA prédictive.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">L'univers de la Tech — Janvier 2026</span>
+                </a>
+                <a href="https://bigmedia.bpifrance.fr/nos-dossiers/quand-lintelligence-artificielle-transforme-la-performance-sportive" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">03 — Quand l'IA transforme la performance sportive</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Startups françaises Deeptimize et SkillCorner : analyse vidéo automatisée et prédiction tactique à Roland-Garros.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Bpifrance / Big Media — 2025</span>
+                </a>
+                <a href="https://theconversation.com/lia-arrive-dans-le-jugement-olympique-quest-ce-qui-pourrait-bien-se-passer-272405" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">04 — L'IA arrive dans le jugement olympique</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Le CIO intègre l'IA au jugement du patinage artistique pour les JO de Milan-Cortina 2026. Enjeux éthiques et biais.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">The Conversation — Janvier 2026</span>
+                </a>
+                <a href="https://www.abcsports.fr/technologie-et-activite-physique-impact-et-tendances-a-connaitre-en-2025/" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">05 — Comment la technologie transforme l'activité physique en 2025</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Objets connectés, capteurs, montres intelligentes : l'IA façonne des programmes sur-mesure. VR et AR dans l'entraînement.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">ABC Sports — Février 2026</span>
+                </a>
+                <a href="https://www.panathlon-international.org/news/index.php/fr/cio-2/item/10454-communique-de-presse-l-avenir-du-sport-rencontre-l-intelligence-artificielle" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">06 — L'avenir du sport rencontre l'intelligence artificielle</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Symposium « Valeurs olympiques et IA » à Milan. Dialogue entre sport, éthique et innovation technologique.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Panathlon International — Février 2026</span>
+                </a>
+                <a href="https://www.janushenderson.com/fr-fr/investor/article/ai-a-real-gamechanger-for-sports/" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">07 — Avec l'IA, le sport fait sa révolution</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Impact économique de l'IA : identification des talents, engagement des fans, streaming et capteurs connectés.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Janus Henderson Investors — Juillet 2025</span>
+                </a>
+                <a href="https://www.fortunebusinessinsights.com/fr/ai-in-sports-market-111181" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">08 — L'IA dans le marché du sport — Prévisions 2034</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Marché mondial : de 1,43 milliard $ en 2026 à 5,01 milliards $ d'ici 2034, croissance de 16,94% par an.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Fortune Business Insights — 2025</span>
+                </a>
+                <a href="https://www.actuenfolie.fr/sports-loisirs/avenir-engagement-sportif-monde-ia/" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">09 — L'avenir de l'engagement sportif piloté par l'IA</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">Jumeaux numériques, hyperpersonnalisation fans, highlights par joueur. L'IA redéfinit performance et événementiel.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Actu en Folie — Décembre 2025</span>
+                </a>
+                <a href="https://vibrez-rugby.com/ecosystemes-numeriques-du-sport-et-du-divertissement-2026/" target="_blank" class="veille-card reveal" style="cursor:pointer;padding:1.5rem 2rem">
+                    <h3 style="font-size:1rem">10 — Écosystèmes numériques du sport 2026</h3>
+                    <p style="font-size:.85rem;margin-bottom:.4rem">50% des plateformes sportives utilisent l'IA. Recommandations personnalisées et recherche de temps forts en direct.</p>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--green)">Vibrez Rugby — Mars 2026</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABLEAU DE SYNTHÈSE -->
+    <section id="synthese" class="section">
+        <div class="container">
+            <div class="section-label reveal">// Épreuve E5</div>
+            <h2 class="section-title reveal">Tableau de synthèse</h2>
+            <p class="section-desc reveal">Ce tableau récapitule l'ensemble de mes réalisations professionnelles dans le cadre du BTS SIO SLAM — Session 2026.</p>
+
+            <!-- En-tête infos candidat -->
+            <div class="synth-header reveal">
+                <div class="synth-header-row"><span class="synth-key">NOM et prénom</span><span class="synth-val">Hamdi Sohaib</span></div>
+                <div class="synth-header-row"><span class="synth-key">N° candidat</span><span class="synth-val">243045362GK</span></div>
+                <div class="synth-header-row"><span class="synth-key">Centre de formation</span><span class="synth-val">Lycée UFA Robert Schuman — Dugny</span></div>
+                <div class="synth-header-row"><span class="synth-key">Option</span><span class="synth-val">SLAM</span></div>
+                <div class="synth-header-row"><span class="synth-key">Portfolio</span><span class="synth-val" style="word-break:break-all">https://hamdisohaib.github.io/portfolio/</span></div>
+            </div>
+
+            <!-- Légende compétences -->
+            <div class="synth-legend reveal">
+                <div class="legend-item"><span class="legend-code">C1</span> Gérer le patrimoine informatique</div>
+                <div class="legend-item"><span class="legend-code">C2</span> Répondre aux incidents et demandes</div>
+                <div class="legend-item"><span class="legend-code">C3</span> Développer la présence en ligne</div>
+                <div class="legend-item"><span class="legend-code">C4</span> Travailler en mode projet</div>
+                <div class="legend-item"><span class="legend-code">C5</span> Mettre à disposition un service informatique</div>
+                <div class="legend-item"><span class="legend-code">C6</span> Organiser son développement professionnel</div>
+            </div>
+
+            <!-- Tableau principal -->
+            <div class="synth-table-wrap reveal">
+                <table class="synth-table">
+                    <thead>
+                        <tr>
+                            <th class="col-name">Réalisation</th>
+                            <th class="col-period">Période</th>
+                            <th class="col-comp">C1</th>
+                            <th class="col-comp">C2</th>
+                            <th class="col-comp">C3</th>
+                            <th class="col-comp">C4</th>
+                            <th class="col-comp">C5</th>
+                            <th class="col-comp">C6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="synth-section-row"><td colspan="8">Réalisations en cours de formation</td></tr>
+                        <tr>
+                            <td>Projet WebCinemaPHP</td>
+                            <td>10/01/25 au 12/03/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                        </tr>
+                        <tr>
+                            <td>StartJavaFX — Java / JavaFX</td>
+                            <td>06/03/25 au 09/05/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Zoo — Java</td>
+                            <td>19/02/25 au 26/02/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Mastermind — Java</td>
+                            <td>27/12/24 au 28/12/24</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Aéroport — PHP</td>
+                            <td>26/03/25 au 09/05/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Nuit de l'Info 2024 — PHP / HTML / JS</td>
+                            <td>05/12/24 au 06/12/24</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tic Tac Toe — Java</td>
+                            <td>12/12/2024</td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                        </tr>
+                        <tr>
+                            <td>GestionHotel — Java</td>
+                            <td>23/01/25 au 30/01/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                        </tr>
+                        <tr>
+                            <td>LPRS École — PHP</td>
+                            <td>09/25 au 12/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>LPRS École — JavaFX</td>
+                            <td>01/25 au 04/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr class="synth-section-row"><td colspan="8">Réalisations en milieu professionnel — 1ère année</td></tr>
+                        <tr>
+                            <td>Mission 1 : Fluidification des postes informatiques</td>
+                            <td>05/25 au 06/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Mission 2 : Découverte et application de WordPress</td>
+                            <td>05/25 au 06/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-off"></span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Mission 3 : Hébergeur (Hostinger) et nom de domaine — MantesCarrelage</td>
+                            <td>05/25 au 06/25</td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                            <td><span class="check-on">✓</span></td>
+                        </tr>
+                        <tr class="synth-section-row"><td colspan="8">Réalisations en milieu professionnel — 2ème année</td></tr>
+                        <tr class="empty-row"><td colspan="8" style="text-align:center;color:var(--text-dim);font-style:italic;padding:1rem">À compléter</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bouton téléchargement -->
+            <div class="synthese-box reveal" style="margin-top:2rem">
+                <div class="synthese-icon-area">
+                    <div class="synthese-file-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    </div>
+                    <div>
+                        <div class="synthese-file-name">Tableau_de_Synthese_Hamdi_Sohaib.pdf</div>
+                        <div class="synthese-file-meta">Télécharger le tableau de synthèse — Épreuve E5</div>
+                    </div>
+                </div>
+                <div class="synthese-actions">
+                    <a href="./Tableau_de_Synthese_Hamdi_Sohaib.pdf" download class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Télécharger (.pdf)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section section-alt">
+        <div class="container">
+            <div class="section-label reveal">// Contact</div>
+            <h2 class="section-title reveal">Restons en contact</h2>
+            <p class="section-desc reveal">N'hésitez pas à me contacter pour toute opportunité de stage, d'alternance ou de projet.</p>
+            <div class="contact-grid">
+                <a href="mailto:sohaib.hamdi11@hotmail.com" class="contact-card reveal">
+                    <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                    <div><div class="contact-label">Email</div><div class="contact-val">sohaib.hamdi11@hotmail.com</div></div>
+                </a>
+                <a href="https://github.com/hamdisohaib" target="_blank" class="contact-card reveal">
+                    <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></div>
+                    <div><div class="contact-label">GitHub</div><div class="contact-val">hamdisohaib</div></div>
+                </a>
+                <a href="https://linkedin.com/in/sohaib-hamdi" target="_blank" class="contact-card reveal">
+                    <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></div>
+                    <div><div class="contact-label">LinkedIn</div><div class="contact-val">Sohaib HAMDI</div></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="brand">Sohaib HAMDI</p>
+        <p>&copy; 2025 — Tous droits réservés · Portfolio BTS SIO SLAM — Session 2026</p>
+    </footer>
+
+    <!-- SCROLL TOP -->
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+
+    <script>
+        const navbar=document.getElementById('navbar'),scrollTopBtn=document.getElementById('scrollTop');
+        window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',scrollY>50);scrollTopBtn.classList.toggle('visible',scrollY>400)});
+        scrollTopBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+        const mt=document.getElementById('mobileToggle'),nl=document.getElementById('navLinks');
+        mt.addEventListener('click',()=>{mt.classList.toggle('open');nl.classList.toggle('open')});
+        nl.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{mt.classList.remove('open');nl.classList.remove('open')}));
+        const secs=document.querySelectorAll('section[id]');
+        window.addEventListener('scroll',()=>{const y=scrollY+120;secs.forEach(s=>{const t=s.offsetTop,h=s.offsetHeight,id=s.getAttribute('id');const l=document.querySelector(`.nav-links a[href="#${id}"]`);if(l)l.classList.toggle('active',y>=t&&y<t+h)})});
+        const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersec
