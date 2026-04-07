@@ -850,4 +850,8 @@
         nl.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{mt.classList.remove('open');nl.classList.remove('open')}));
         const secs=document.querySelectorAll('section[id]');
         window.addEventListener('scroll',()=>{const y=scrollY+120;secs.forEach(s=>{const t=s.offsetTop,h=s.offsetHeight,id=s.getAttribute('id');const l=document.querySelector(`.nav-links a[href="#${id}"]`);if(l)l.classList.toggle('active',y>=t&&y<t+h)})});
-        const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersec
+        const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>{e.target.classList.add('visible')},i*80);obs.unobserve(e.target)}})},{threshold:0.1});
+        document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    </script>
+</body>
+</html>
